@@ -52,32 +52,32 @@ const Signup = () => {
         }
     }
     return (
-        <div>
-            <form onSubmit={(e) => {
+        <div className='bg-zinc-100 border border-neutral-300 mx-auto my-auto max-w-xl min-w-md p-8 rounded-3xl shadow-xl'>
+            <h1 className='text-center text-3xl font-bold'>Welcome to <span className='tracking-widest'>TASks</span></h1>
+            <h3 className='text-center mb-6 text-sm font-medium text-neutral-600'>Create an account</h3>
+            <form className='flex flex-col gap-4' onSubmit={(e) => {
                 handleSubmit(e);
             }}>
-                <h1>Welcome to Tasks</h1>
-                <h3>Create an account</h3>
                 <div>
                     <label htmlFor="name">Name</label>
-                    <input id='name' type="text" autoComplete='name' value={form.name} onChange={(e) => {
+                    <input placeholder='Full Name' id='name' type="text" autoComplete='name' value={form.name} className='placeholder:text-neutral-400 text-neutral-600 w-full bg-zinc-50 border border-neutral-200 outline-none focus:ring-1 focus:ring-neutral-300 rounded-xl px-2 py-1' onChange={(e) => {
                         setForm({ ...form, name: e.target.value })
                     }} />
                 </div>
                 <div>
                     <label htmlFor="email">Email</label>
-                    <input id='email' type="email" autoComplete='email' value={form.email} onChange={(e) => {
+                    <input placeholder='example@abc.com' id='email' type="email" autoComplete='email' value={form.email} className='placeholder:text-neutral-400 text-neutral-600 w-full bg-zinc-50 border border-neutral-200 outline-none focus:ring-1 focus:ring-neutral-300 rounded-xl px-2 py-1' onChange={(e) => {
                         setForm({ ...form, email: e.target.value })
                     }} />
                 </div>
                 <div>
                     <label htmlFor="password">Password</label>
-                    <input id='password' type="password" autoComplete='new-password' value={form.password} onChange={(e) => {
+                    <input id='password' type="password" autoComplete='new-password' value={form.password} className='text-neutral-600 w-full bg-zinc-50 border border-neutral-200 outline-none focus:ring-1 focus:ring-neutral-300 rounded-xl px-2 py-1' onChange={(e) => {
                         setForm({ ...form, password: e.target.value })
                     }} />
                 </div>
-                <button disabled={loading} type='submit'>{loading ? 'Creating account' : 'Sign Up'}</button>
-                <p>Already have an account? <Link href={'/login'}>Log in</Link></p>
+                <button disabled={loading} className='w-full cursor-pointer hover:-translate-y-0.5 bg-black text-white text-lg font-semibold rounded-xl px-2 py-1 transition duration-300' type='submit'>{loading ? 'Creating account' : 'Sign Up'}</button>
+                <p className='text-center mt-6 text-sm text-neutral-600 '>Already have an account? <Link className='text-neutral-800 font-medium underline cursor-pointer' href={'/login'}>Log in</Link></p>
             </form>
         </div>
     )
