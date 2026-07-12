@@ -32,10 +32,10 @@ export async function GET(req){
             case 'oldest':
                 sortObj={createdAt:1};
                 break;
-            case 'az':
+            case 'A-Z':
                 sortObj={title:1};
                 break;
-            case 'za':
+            case 'Z-A':
                 sortObj={title:-1}
                 break;
         }
