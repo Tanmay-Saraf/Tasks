@@ -105,9 +105,88 @@ export async function POST(req){
         
     } catch (error) {
         console.error(error);
+        return NextResponse.json({
+            success:false,
+            message:"Server Error", 
+        },{status:500})
     }
-    return NextResponse.json({
-        success:false,
-        message:"Server Error", 
-    },{status:500})
+}
+
+export async function PUT(req){
+    try {
+        const session = await getUser();
+        if(!session){
+            return NextResponse.json({
+                success:false,
+                message:'User not logged in!'
+            },{status:400})
+        }
+        const user = session.user;
+        await connectDb();
+        const body = await req.json();
+        const {title,id} = body;
+        if(!title.trim()){
+            return NextResponse.json({
+                success:false,
+                message:"Board title cannot be empty or empty spaces"
+            },{status:400})
+        }
+        if(title.trim().length>100){
+            return NextResponse.json({
+                success:false,
+                message:"Title length cannot exceed 100 characters"
+            },{status:400})
+        }
+        const UpdatedBoard = await Board.findOneAndUpdate({_id:id,owner:user.id},{title:title.trim()});
+        if(!UpdatedBoard){
+            return NextResponse.json({
+                success:false,
+                message:`Couldn't find the board!`,
+            },{status:400})
+        }
+        return NextResponse.json({
+            success:true,
+            message:'Updated Successfully!'
+        })
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({
+            success:false,
+            message:'Server Error'
+        },{status:500})
+    }
+}
+
+
+export async function DELETE(req){
+    try {
+        const session = await getUser();
+        if(!session){
+            return NextResponse.json({
+                success:false,
+                message:'User not logged in!'
+            },{status:400})
+        }
+        const user = session.user;
+        await connectDb();
+        const body = await req.json();
+        const {id} = body;
+        const deleteBoard = await Board.findOneAndDelete({_id:id,owner:user.id});
+        if(!deleteBoard){
+            return NextResponse.json({
+                success:false,
+                message:'Board not found'
+            },{status:400})
+        }
+        return NextResponse.json({
+            success:true,
+            message:'Deleted Successfully'
+        })
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({
+            success:false,
+            message:'Server Error'
+        },{status:500})
+    }
 }
