@@ -16,6 +16,11 @@ const taskSchema = new mongoose.Schema({
         ref:"Column",
         required:true,
     },
+    board:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Board',
+        required:true,
+    },
     order:{
         type:Number,
         required:true,
