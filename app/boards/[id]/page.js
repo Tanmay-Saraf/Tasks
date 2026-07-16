@@ -21,12 +21,12 @@ export default async function Page({ params }) {
         }, {
             title: 1,
             createdAt: 1,
-        })
+        }).lean()
         if (!board) {
             notFound();
         }
-        const columns = await Column.find({board:board._id},{title:1,order:1}).sort({order:1})
-        const tasks = await Task.find({board:board._id},{title:1,description:1,order:1,priority:1,column:1}).sort({order:1});
+        const columns = await Column.find({board:board._id},{title:1,order:1}).sort({order:1}).lean()
+        const tasks = await Task.find({board:board._id},{title:1,description:1,order:1,priority:1,column:1}).sort({order:1}).lean();
         const groupedTasks = {};
         for(const task of tasks){
             const idx = task.column.toString();
@@ -36,12 +36,12 @@ export default async function Page({ params }) {
             groupedTasks[idx].push(task);
         }
         const columnsWithTask  = columns.map(column=>({
-                ...column.toObject(),
+                ...column,
                 tasks:groupedTasks[column._id.toString()]||[],
             }
             )
         )
-        return <BoardPage board={board} columns={columnsWithTask}/>
+            return <BoardPage board={JSON.parse(JSON.stringify(board))} columns={JSON.parse(JSON.stringify(columnsWithTask))}/>
     } catch (error) {
         console.error(error);
         if(error.name==='CastError'){
